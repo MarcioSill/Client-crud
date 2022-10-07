@@ -30,6 +30,23 @@ public class ClientService {
 		Optional<Client> obj = repository.findById(id);
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not foud"));
 		return new ClientDTO(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public ClientDTO insert(ClientDTO dto) {
+		Client entity = new Client();
+		copyDtoEntity(dto, entity);
+		entity = repository.save(entity);
+		return new ClientDTO(entity);
+	}
+
+	private void copyDtoEntity(ClientDTO dto, Client entity) {
+		entity.setName(dto.getName());
+		entity.setCpf(dto.getCpf());
+		entity.setIncome(dto.getIncome());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setChildren(dto.getChildren());
+	
 	}	
 
 }
